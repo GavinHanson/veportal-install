@@ -121,8 +121,16 @@ mkdir $LOGS &> /dev/null
             else
                 wget $FILEOVZ32 &> $LOGS/get_ovzinstaller32.log
             fi
-        sh ovzinstall.sh &> $LOGS/install_openvz.log
-        rm -fr ovzinstall.sh &> /dev/null
+
+	# NEW OPENVZ INSTALLATION INSTRUCTION
+
+	#Download & Import OpenVZ Repo
+	/usr/bin/wget http://download.openvz.org/openvz.repo &> $LOGS/ovz2_install.log
+	/bin/rpm --import http://download.openvz.org/RPM-GPG-Key-OpenVZ &> $LOGS/ovz2_install.log
+
+	#Install OpenVZ from Repo
+	/usr/bin/yum -y install vzkernel &> $LOGS/ovz2_install.log
+	/usr/bin/yum -y install vzctl vzquota &> $LOGS/ovz2_install.log
         
         /bin/mv /etc/vz/vz.conf /etc/vz/vz.conf.old &> /dev/null
         
