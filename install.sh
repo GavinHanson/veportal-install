@@ -126,6 +126,7 @@ mkdir $LOGS &> /dev/null
 
 	#Download & Import OpenVZ Repo
 	/usr/bin/wget http://download.openvz.org/openvz.repo &> $LOGS/ovz2_install.log
+	/bin/mv openvz.repo /etc/yum.repos.d/
 	/bin/rpm --import http://download.openvz.org/RPM-GPG-Key-OpenVZ &> $LOGS/ovz2_install.log
 
 	#Install OpenVZ from Repo
