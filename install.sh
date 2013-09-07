@@ -55,20 +55,21 @@ echo `</dev/urandom tr -dc A-Za-z0-9 | head -c18`
 SQLPASS=`randpass`
 
 # v2 Splash Screen in Blue with Red Text
-echo "${TXT_GREEN}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
-echo "${TXT_GREEN}oo ${TXT_YLW}            _____            _         _        ___  ${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW}           |  __ \          | |       | |      |__ \ ${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW} __   _____| |__) |___  _ __| |_  __ _| | __   __ ) |${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW} \ \ / / _ \  ___// _ \| '__| __|/ _\` | | \ \ / // / ${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW}  \ V /  __/ |   | (_) | |  | |_| (_| | |  \ V // /_ ${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW}   \_/ \___|_|    \___/|_|   \__|\__,_|_|   \_/|____|${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo ${TXT_YLW}                                                     ${TXT_RESET}  ${TXT_GREEN} oo"
-echo "${TXT_GREEN}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
-echo "${TXT_GREEN}oo                                                        ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo               ${TXT_YLW}Version 2.2.100 Installer${TXT_RESET}                ${TXT_GREEN} oo"
-echo "${TXT_GREEN}oo                                                        ${TXT_GREEN} oo"
-echo "${TXT_GREEN}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+echo "${TXT_RED}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+echo "${TXT_RED}oo ${TXT_BLUE}            _____            _         _        ___  ${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE}           |  __ \          | |       | |      |__ \ ${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE} __   _____| |__) |___  _ __| |_  __ _| | __   __ ) |${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE} \ \ / / _ \  ___// _ \| '__| __|/ _\` | | \ \ / // / ${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE}  \ V /  __/ |   | (_) | |  | |_| (_| | |  \ V // /_ ${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE}   \_/ \___|_|    \___/|_|   \__|\__,_|_|   \_/|____|${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}oo ${TXT_BLUE}                                                     ${TXT_RESET}  ${TXT_RED} oo"
+echo "${TXT_RED}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+echo "${TXT_RED}oo                                                        ${TXT_RED} oo"
+echo "${TXT_RED}oo               ${TXT_BLUE}Version 2.2.100 Installer${TXT_RESET}                ${TXT_RED} oo"
+echo "${TXT_RED}oo                                                        ${TXT_RED} oo"
+echo "${TXT_RED}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
 echo "${TXT_RESET}"
+echo "${TXT_BLD}INSTALLER UPDAYE NOTICE: This installer has been updated to allow full installation of OpenVZ however some functions may no longer function on 32bit Operating Systems we reccomend CentOS 6.x x86_64${TXT_RESET}"
 
 # Check That Running OS Is a RHEL Clone or RHEL
 if [[ -f /etc/redhat-release ]]; then
@@ -342,27 +343,7 @@ mkdir $LOGS &> /dev/null
     rm -fr ostImport.php &> /dev/null
     
 
-# Step 14: Setup RRDTool
-# ==============================================================================
-    echo "${TXT_BLUE}Step 14:${TXT_RED} Installing & Configuring RRDTool${TXT_RESET}"
-
-        if [ $OSBIT == "32" ]; then
-                wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.i686.rpm &> $LOGS/setup_rpmforge.log
-        else
-                wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm &> $LOGS/setup_rpmforge.log
-        fi
-
-        mv rpmforge-release*.rpm /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
-        cd /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
-        rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt >> $LOGS/setup_rpmforge.log
-        rpm -K rpmforge-release-0.5.3-1.*.rpm >> $LOGS/setup_rpmforge.log
-        rpm -i rpmforge-release-0.5.3-1.*.rpm >> $LOGS/setup_rpmforge.log
-
-        yum -y install rrdtool *rrd* --skip-broken  >> $LOGS/setup_rrdtool.log
-        echo " " >> /etc/php.ini
-        echo "extension=\"rrdtool.so\"" >> /etc/php.ini
-
-# Step 15: Cleanup Files & Display Completion Message
+# Step 14: Cleanup Files & Display Completion Message
 # ==============================================================================
     echo "${TXT_BLUE}Step 15:${TXT_RED} Removing Temporary Files & Finalising Installation${TXT_RESET}"
     rm -fr install.sh
