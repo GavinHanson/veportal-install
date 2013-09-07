@@ -69,7 +69,7 @@ echo "${TXT_RED}oo               ${TXT_BLUE}Version 2.2.100 Installer${TXT_RESET
 echo "${TXT_RED}oo                                                        ${TXT_RED} oo"
 echo "${TXT_RED}ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
 echo "${TXT_RESET}"
-echo "${TXT_BLD}INSTALLER UPDAYE NOTICE: This installer has been updated to allow full installation of OpenVZ however some functions may no longer function on 32bit Operating Systems we reccomend CentOS 6.x x86_64${TXT_RESET}"
+echo "${TXT_BLD}INSTALLER UPDATED NOTICE: This installer has been updated to allow full installation of OpenVZ however some functions may no longer function on 32bit Operating Systems we reccomend CentOS 6.x x86_64${TXT_RESET}"
 
 # Check That Running OS Is a RHEL Clone or RHEL
 if [[ -f /etc/redhat-release ]]; then
