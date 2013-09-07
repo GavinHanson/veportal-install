@@ -142,11 +142,6 @@ mkdir $LOGS &> /dev/null
     
     rm -fr vzprocps-2.0.11-6.13.swsoft.i386.rpm &> /dev/null
     
-#    echo " " >> /etc/vz/vz.conf
-#    echo "## IPv4 iptables kernel modules" >> /etc/vz/vz.conf
-#    echo "IPTABLES="ipt_REJECT ipt_tos ipt_TOS ipt_LOG ip_conntrack ipt_conntrack ip_conntrack_ftp ipt_limit ipt_multiport iptable_filter iptable_mangle ipt_TCPMSS ipt_tcpmss ipt_ttl ipt_length ipt_state iptable_nat ip_nat_ftp ipt_owner ipt_REDIRECT ipt_recent"" >> /etc/vz/vz.conf
-
-    
 # Step2: Install VZDump for Backups
 # ==============================================================================
     echo "${TXT_BLUE}Step 2: ${TXT_RED}Installing vePortal Backup System for ${OSBIT}bit OS${TXT_RESET}"
@@ -169,7 +164,7 @@ mkdir $LOGS &> /dev/null
 # ==============================================================================
     echo "${TXT_BLUE}Step 3:${TXT_RED} Installing Dependancies for ${OSBIT}bit OS${TXT_RESET}"
 
-    yum -y install sendmail mysqld php httpd php-mysql php-mcrypt php-mbstring php-mysql mysql-devel mysql-server nano httpd-devel mysql-server nano httpd-devel php-cli gcc-c++ openssl mod_ssl expect make gd php-gd &> $LOGS/yum_installs.log
+    yum -y install sendmail mysqld php httpd php-mysql php-mcrypt php-mbstring php-mysql mysql-devel mysql-server nano httpd-devel mysql-server nano httpd-devel php-cli gcc-c++ openssl mod_ssl expect make gd php-gd --skip-broken &> $LOGS/yum_installs.log
     if [ $OSBIT == "64" ]; then
 	wget $FILELIBMCRYPT64 &> $LOGS/get_libmcript.log
 	wget $FILEPHPMCRYPT64 &> $LOGS/get_phpmcrypt.log
@@ -301,7 +296,6 @@ mkdir $LOGS &> /dev/null
     tar -xf vefiles.tar -C /; &> $LOGS/deployfiles.log
     rm -fr vefiles.tar
     mkdir /usr/local/veportal/gui/userconf
-#    mkdir /usr/local/veportal/ssl
     
     mv dbinfo.php /usr/local/veportal/gui/userconf/dbinfo.php
     
@@ -309,10 +303,6 @@ mkdir $LOGS &> /dev/null
     
     mv /usr/local/veportal/skel /vz/skel
     ln -s /vz/skel /usr/local/veportal/skel
-    
-#    wget $FILECRONS &> $LOGS/download_cronset.log
-#    /usr/bin/crontab defaultcron
-#    rm -fr defaultcron
     
 # Step 10: Set Custom Commands & Configure Services
 # ==============================================================================
@@ -337,7 +327,6 @@ mkdir $LOGS &> /dev/null
 # Step 12: Set Permissions on vePortal Files
 # ==============================================================================
     echo "${TXT_BLUE}Step 12:${TXT_RED} Setting Permissions${TXT_RESET}"
-    mkdir /usr/local/veportal/ssl
     chown -R veportal:veportal /usr/local/veportal
     chown -R veportal:veportal /var/lib/php/session
     chown veportal:veportal /etc/vz/vz.conf
@@ -357,21 +346,21 @@ mkdir $LOGS &> /dev/null
 # ==============================================================================
     echo "${TXT_BLUE}Step 14:${TXT_RED} Installing & Configuring RRDTool${TXT_RESET}"
 
-	if [ $OSBIT == "32" ]; then
-        	wget http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.i386.rpm &> $LOGS/setup_rpmforge.log
-	else
-        	wget http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm &> $LOGS/setup_rpmforge.log
-	fi
+        if [ $OSBIT == "32" ]; then
+                wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.i686.rpm &> $LOGS/setup_rpmforge.log
+        else
+                wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm &> $LOGS/setup_rpmforge.log
+        fi
 
-	mv rpmforge-release*.rpm /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
-	cd /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
-	rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt >> $LOGS/setup_rpmforge.log
-	rpm -K rpmforge-release-0.5.2-2.el5.rf.*.rpm >> $LOGS/setup_rpmforge.log
-	rpm -i rpmforge-release-0.5.2-2.el5.rf.*.rpm >> $LOGS/setup_rpmforge.log
+        mv rpmforge-release*.rpm /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
+        cd /etc/yum.repos.d >> $LOGS/setup_rpmforge.log
+        rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt >> $LOGS/setup_rpmforge.log
+        rpm -K rpmforge-release-0.5.3-1.*.rpm >> $LOGS/setup_rpmforge.log
+        rpm -i rpmforge-release-0.5.3-1.*.rpm >> $LOGS/setup_rpmforge.log
 
-	yum -y install rrdtool *rrd* --skip-broken  >> $LOGS/setup_rrdtool.log
-	echo " " >> /etc/php.ini
-	echo "extension=\"rrdtool.so\"" >> /etc/php.ini
+        yum -y install rrdtool *rrd* --skip-broken  >> $LOGS/setup_rrdtool.log
+        echo " " >> /etc/php.ini
+        echo "extension=\"rrdtool.so\"" >> /etc/php.ini
 
 # Step 15: Cleanup Files & Display Completion Message
 # ==============================================================================
